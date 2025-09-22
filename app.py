@@ -2,7 +2,7 @@
 import cv2
 import mediapipe as mp
 from math import atan2, degrees
-from utils import calculate_angle, check_anomaly
+from model.utils import calculate_angle, check_anomaly
 import time
 last_jump_time = 0  # Add this near your variables section
 
