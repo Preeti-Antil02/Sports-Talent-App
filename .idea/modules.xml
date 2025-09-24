@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/Sports-Talent-App.iml" filepath="$PROJECT_DIR$/.idea/Sports-Talent-App.iml" />
+      <module fileurl="file://$PROJECT_DIR$/track8.iml" filepath="$PROJECT_DIR$/track8.iml" />
+      <module fileurl="file://$PROJECT_DIR$/android/track8_android.iml" filepath="$PROJECT_DIR$/android/track8_android.iml" />
     </modules>
   </component>
 </project>
