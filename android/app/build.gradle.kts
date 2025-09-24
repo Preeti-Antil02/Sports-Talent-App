@@ -6,7 +6,11 @@ plugins {
 }
 
 android {
+<<<<<<< HEAD
     namespace = "com.example.sportstalentapp"
+=======
+    namespace = "com.example.sports_assesment"
+>>>>>>> 978327aef78e8b7eac1dfde8bb76b3dc0ba7ab81
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -21,7 +25,11 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
+<<<<<<< HEAD
         applicationId = "com.example.sportstalentapp"
+=======
+        applicationId = "com.example.sports_assesment"
+>>>>>>> 978327aef78e8b7eac1dfde8bb76b3dc0ba7ab81
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion

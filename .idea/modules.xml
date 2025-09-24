@@ -2,8 +2,12 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+<<<<<<< HEAD
       <module fileurl="file://$PROJECT_DIR$/track8.iml" filepath="$PROJECT_DIR$/track8.iml" />
       <module fileurl="file://$PROJECT_DIR$/android/track8_android.iml" filepath="$PROJECT_DIR$/android/track8_android.iml" />
+=======
+      <module fileurl="file://$PROJECT_DIR$/sports_assesment.iml" filepath="$PROJECT_DIR$/sports_assesment.iml" />
+>>>>>>> 978327aef78e8b7eac1dfde8bb76b3dc0ba7ab81
     </modules>
   </component>
 </project>

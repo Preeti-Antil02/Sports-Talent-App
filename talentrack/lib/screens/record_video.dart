@@ -26,8 +26,12 @@ class _LiveMetricsPageState extends State<LiveMetricsPage> {
 
   Future<void> _initializeCamera() async {
     final cameras = await availableCameras();
-    final camera = cameras.first;
-    _controller = CameraController(camera, ResolutionPreset.high, enableAudio: true);
+    final camera = cameras.first; // Use first camera (usually back)
+    _controller = CameraController(
+      camera,
+      ResolutionPreset.high,
+      enableAudio: true,
+    );
     await _controller!.initialize();
     if (mounted) setState(() {});
   }
@@ -55,11 +59,15 @@ class _LiveMetricsPageState extends State<LiveMetricsPage> {
       _savedVideoPath = savedPath;
     });
 
+    // Upload to backend
     await _uploadVideo(savedPath);
   }
 
   Future<void> _uploadVideo(String filePath) async {
-    var request = http.MultipartRequest('POST', Uri.parse("http://10.0.2.2:8000/upload"));
+    var request = http.MultipartRequest(
+      'POST',
+      Uri.parse("http://10.0.2.2:8000/upload"), // Emulator IP
+    );
     request.files.add(await http.MultipartFile.fromPath('file', filePath));
 
     var response = await request.send();
@@ -68,8 +76,9 @@ class _LiveMetricsPageState extends State<LiveMetricsPage> {
       setState(() {
         _mlResults = jsonDecode(respStr);
       });
+      print("✅ Backend response: $_mlResults");
     } else {
-      print("Upload failed: ${response.statusCode}");
+      print("❌ Upload failed: ${response.statusCode}");
     }
   }
 
@@ -86,31 +95,40 @@ class _LiveMetricsPageState extends State<LiveMetricsPage> {
     }
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Sports Metrics")),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            AspectRatio(aspectRatio: _controller!.value.aspectRatio, child: CameraPreview(_controller!)),
-            const SizedBox(height: 20),
-            _isRecording ? const Text("Recording...", style: TextStyle(color: Colors.red)) : const Text("Ready to record"),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _isRecording ? _stopRecording : _startRecording,
-              child: Text(_isRecording ? "Stop" : "Record"),
-            ),
-            const SizedBox(height: 20),
-            if (_savedVideoPath != null) Text("Video saved at:\n$_savedVideoPath", textAlign: TextAlign.center),
-            const SizedBox(height: 20),
-            if (_mlResults != null)
-              Column(
-                children: [
-                  Text("Sit-ups: ${_mlResults!['situp_count']}"),
-                  Text("Jump height: ${_mlResults!['jump_height_cm'].toStringAsFixed(1)} cm"),
-                  Text("Anomaly detected: ${_mlResults!['anomaly_detected']}"),
-                ],
+      appBar: AppBar(title: const Text("Live Metrics")),
+      body: Column(
+        children: [
+          AspectRatio(
+            aspectRatio: _controller!.value.aspectRatio,
+            child: CameraPreview(_controller!),
+          ),
+          const SizedBox(height: 20),
+          if (_isRecording)
+            const Text("Recording...", style: TextStyle(color: Colors.red))
+          else
+            const Text("Ready to record"),
+          const SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                onPressed: _isRecording ? _stopRecording : _startRecording,
+                child: Text(_isRecording ? "Stop" : "Record"),
               ),
-          ],
-        ),
+            ],
+          ),
+          const SizedBox(height: 20),
+          if (_mlResults != null)
+            Column(
+              children: [
+                Text("Sit-ups: ${_mlResults!['situp_count']}"),
+                Text("Jump height: ${_mlResults!['jump_height_cm']} cm"),
+                Text("Anomaly detected: ${_mlResults!['anomaly_detected']}"),
+              ],
+            ),
+          if (_savedVideoPath != null)
+            Text("Video stored at: $_savedVideoPath"),
+        ],
       ),
     );
   }

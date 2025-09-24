@@ -5,7 +5,11 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
+<<<<<<< HEAD
 	<string>Sportstalentapp</string>
+=======
+	<string>Sports Assesment</string>
+>>>>>>> 978327aef78e8b7eac1dfde8bb76b3dc0ba7ab81
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -13,7 +17,11 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
+<<<<<<< HEAD
 	<string>sportstalentapp</string>
+=======
+	<string>sports_assesment</string>
+>>>>>>> 978327aef78e8b7eac1dfde8bb76b3dc0ba7ab81
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>

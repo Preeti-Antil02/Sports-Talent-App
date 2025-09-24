@@ -1,10 +1,18 @@
 # Project-level configuration.
 cmake_minimum_required(VERSION 3.14)
+<<<<<<< HEAD
 project(sportstalentapp LANGUAGES CXX)
 
 # The name of the executable created for the application. Change this to change
 # the on-disk name of your application.
 set(BINARY_NAME "sportstalentapp")
+=======
+project(sports_assesment LANGUAGES CXX)
+
+# The name of the executable created for the application. Change this to change
+# the on-disk name of your application.
+set(BINARY_NAME "sports_assesment")
+>>>>>>> 978327aef78e8b7eac1dfde8bb76b3dc0ba7ab81
 
 # Explicitly opt in to modern CMake behaviors to avoid warnings with recent
 # versions of CMake.

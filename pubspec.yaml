@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 name: sportstalentapp
+=======
+name: sports_assesment
+>>>>>>> 978327aef78e8b7eac1dfde8bb76b3dc0ba7ab81
 description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.

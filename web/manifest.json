@@ -1,6 +1,11 @@
 {
+<<<<<<< HEAD
     "name": "sportstalentapp",
     "short_name": "sportstalentapp",
+=======
+    "name": "sports_assesment",
+    "short_name": "sports_assesment",
+>>>>>>> 978327aef78e8b7eac1dfde8bb76b3dc0ba7ab81
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

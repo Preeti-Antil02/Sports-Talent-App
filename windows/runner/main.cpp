@@ -27,7 +27,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE instance, _In_opt_ HINSTANCE prev,
   FlutterWindow window(project);
   Win32Window::Point origin(10, 10);
   Win32Window::Size size(1280, 720);
+<<<<<<< HEAD
   if (!window.Create(L"sportstalentapp", origin, size)) {
+=======
+  if (!window.Create(L"sports_assesment", origin, size)) {
+>>>>>>> 978327aef78e8b7eac1dfde8bb76b3dc0ba7ab81
     return EXIT_FAILURE;
   }
   window.SetQuitOnClose(true);

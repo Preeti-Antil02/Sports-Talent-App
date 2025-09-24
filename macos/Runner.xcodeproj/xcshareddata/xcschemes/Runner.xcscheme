@@ -15,7 +15,11 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "33CC10EC2044A3C60003C045"
+<<<<<<< HEAD
                BuildableName = "sportstalentapp.app"
+=======
+               BuildableName = "sports_assesment.app"
+>>>>>>> 978327aef78e8b7eac1dfde8bb76b3dc0ba7ab81
                BlueprintName = "Runner"
                ReferencedContainer = "container:Runner.xcodeproj">
             </BuildableReference>
@@ -31,7 +35,11 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "33CC10EC2044A3C60003C045"
+<<<<<<< HEAD
             BuildableName = "sportstalentapp.app"
+=======
+            BuildableName = "sports_assesment.app"
+>>>>>>> 978327aef78e8b7eac1dfde8bb76b3dc0ba7ab81
             BlueprintName = "Runner"
             ReferencedContainer = "container:Runner.xcodeproj">
          </BuildableReference>
@@ -66,7 +74,11 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "33CC10EC2044A3C60003C045"
+<<<<<<< HEAD
             BuildableName = "sportstalentapp.app"
+=======
+            BuildableName = "sports_assesment.app"
+>>>>>>> 978327aef78e8b7eac1dfde8bb76b3dc0ba7ab81
             BlueprintName = "Runner"
             ReferencedContainer = "container:Runner.xcodeproj">
          </BuildableReference>
@@ -83,7 +95,11 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "33CC10EC2044A3C60003C045"
+<<<<<<< HEAD
             BuildableName = "sportstalentapp.app"
+=======
+            BuildableName = "sports_assesment.app"
+>>>>>>> 978327aef78e8b7eac1dfde8bb76b3dc0ba7ab81
             BlueprintName = "Runner"
             ReferencedContainer = "container:Runner.xcodeproj">
          </BuildableReference>

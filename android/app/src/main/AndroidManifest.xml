@@ -1,6 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
+<<<<<<< HEAD
         android:label="sportstalentapp"
+=======
+        android:label="sports_assesment"
+>>>>>>> 978327aef78e8b7eac1dfde8bb76b3dc0ba7ab81
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
