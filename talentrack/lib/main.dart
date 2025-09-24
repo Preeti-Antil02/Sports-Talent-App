@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:talenttrack/theme.dart';
-import 'package:talenttrack/screens/auth/otp_login_screen.dart';
-import 'package:talenttrack/screens/main_navigation_screen.dart';
-import 'package:talenttrack/services/auth_service.dart';
-import 'screens/live_metrics_page.dart';
-import 'package:http/http.dart' as http;
+import 'theme.dart';
+import 'screens/auth/otp_login_screen.dart';
+import 'screens/main_navigation_screen.dart';
+import 'services/auth_service.dart';
 
 void main() {
-  runApp(const TalentTrackApp());
+  runApp(TalentTrackApp());
 }
 
 class TalentTrackApp extends StatelessWidget {
-  const TalentTrackApp({super.key});
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -21,31 +17,25 @@ class TalentTrackApp extends StatelessWidget {
       theme: lightTheme,
       darkTheme: darkTheme,
       themeMode: ThemeMode.system,
-      home: LiveMetricsPage(),
+      home: AuthWrapper(),   // ✅ show login OR main screen
     );
   }
 }
 
 class AuthWrapper extends StatelessWidget {
-  const AuthWrapper({super.key});
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<bool>(
-      future: AuthService.isLoggedIn(),
+      future: AuthService.isLoggedIn(), // 👈 check if user logged in
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Scaffold(
-            body: Center(
-              child: CircularProgressIndicator(),
-            ),
+          return Scaffold(
+            body: Center(child: CircularProgressIndicator()),
           );
-        }
-
-        if (snapshot.data == true) {
-          return const MainNavigationScreen();
+        } else if (snapshot.hasData && snapshot.data == true) {
+          return MainNavigationScreen(); // ✅ logged in
         } else {
-          return const OTPLoginScreen();
+          return OTPLoginScreen(); // ✅ not logged in
         }
       },
     );

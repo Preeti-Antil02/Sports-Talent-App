@@ -1,55 +1,114 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
-import '../services/backend_service.dart';
+import 'package:camera/camera.dart';
+import 'package:path_provider/path_provider.dart';
+import 'dart:io';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class LiveMetricsPage extends StatefulWidget {
+  const LiveMetricsPage({Key? key}) : super(key: key);
+
   @override
-  _LiveMetricsPageState createState() => _LiveMetricsPageState();
+  State<LiveMetricsPage> createState() => _LiveMetricsPageState();
 }
 
 class _LiveMetricsPageState extends State<LiveMetricsPage> {
-  final backendService = BackendService(baseUrl: 'http://10.0.2.2:8000'); // Use emulator IP
-  Map<String, dynamic> metrics = {};
-  Timer? timer;
+  CameraController? _controller;
+  bool _isRecording = false;
+  String? _savedVideoPath;
+  Map<String, dynamic>? _mlResults;
 
   @override
   void initState() {
     super.initState();
-    fetchMetrics();
-    timer = Timer.periodic(Duration(seconds: 1), (_) => fetchMetrics());
+    _initializeCamera();
   }
 
-  void fetchMetrics() async {
-    try {
-      final data = await backendService.getMetrics();
+  Future<void> _initializeCamera() async {
+    final cameras = await availableCameras();
+    final camera = cameras.first;
+    _controller = CameraController(camera, ResolutionPreset.high, enableAudio: true);
+    await _controller!.initialize();
+    if (mounted) setState(() {});
+  }
+
+  Future<String> _getAppVideoPath() async {
+    final directory = await getApplicationDocumentsDirectory();
+    return '${directory.path}/${DateTime.now().millisecondsSinceEpoch}.mp4';
+  }
+
+  Future<void> _startRecording() async {
+    if (_controller == null || _controller!.value.isRecordingVideo) return;
+    await _controller!.startVideoRecording();
+    setState(() => _isRecording = true);
+  }
+
+  Future<void> _stopRecording() async {
+    if (_controller == null || !_controller!.value.isRecordingVideo) return;
+
+    final XFile videoFile = await _controller!.stopVideoRecording();
+    final savedPath = await _getAppVideoPath();
+    await videoFile.saveTo(savedPath);
+
+    setState(() {
+      _isRecording = false;
+      _savedVideoPath = savedPath;
+    });
+
+    await _uploadVideo(savedPath);
+  }
+
+  Future<void> _uploadVideo(String filePath) async {
+    var request = http.MultipartRequest('POST', Uri.parse("http://10.0.2.2:8000/upload"));
+    request.files.add(await http.MultipartFile.fromPath('file', filePath));
+
+    var response = await request.send();
+    if (response.statusCode == 200) {
+      String respStr = await response.stream.bytesToString();
       setState(() {
-        metrics = data;
+        _mlResults = jsonDecode(respStr);
       });
-    } catch (e) {
-      print('Error fetching metrics: $e');
+    } else {
+      print("Upload failed: ${response.statusCode}");
     }
   }
 
   @override
   void dispose() {
-    timer?.cancel();
+    _controller?.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    if (_controller == null || !_controller!.value.isInitialized) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
     return Scaffold(
-      appBar: AppBar(title: Text('Live Metrics')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
+      appBar: AppBar(title: const Text("Sports Metrics")),
+      body: SingleChildScrollView(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Sit-up Count: ${metrics['situp_count'] ?? 0}', style: TextStyle(fontSize: 24)),
-            SizedBox(height: 16),
-            Text('Jump Height: ${metrics['jump_height_cm']?.toStringAsFixed(2) ?? 0} cm', style: TextStyle(fontSize: 24)),
-            SizedBox(height: 16),
-            Text('Anomaly Detected: ${metrics['anomaly_detected'] ?? false}', style: TextStyle(fontSize: 24)),
+            AspectRatio(aspectRatio: _controller!.value.aspectRatio, child: CameraPreview(_controller!)),
+            const SizedBox(height: 20),
+            _isRecording ? const Text("Recording...", style: TextStyle(color: Colors.red)) : const Text("Ready to record"),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: _isRecording ? _stopRecording : _startRecording,
+              child: Text(_isRecording ? "Stop" : "Record"),
+            ),
+            const SizedBox(height: 20),
+            if (_savedVideoPath != null) Text("Video saved at:\n$_savedVideoPath", textAlign: TextAlign.center),
+            const SizedBox(height: 20),
+            if (_mlResults != null)
+              Column(
+                children: [
+                  Text("Sit-ups: ${_mlResults!['situp_count']}"),
+                  Text("Jump height: ${_mlResults!['jump_height_cm'].toStringAsFixed(1)} cm"),
+                  Text("Anomaly detected: ${_mlResults!['anomaly_detected']}"),
+                ],
+              ),
           ],
         ),
       ),
